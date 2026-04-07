@@ -1,16 +1,31 @@
-FROM richarvey/nginx-php-fpm:3.1.6
 
-# Copy toàn bộ code vào server
-COPY . /var/www/html
+FROM php:8.4-fpm
 
-# Cấu hình Laravel
-ENV SKIP_COMPOSER 0
-ENV PHP_ERRORS_STDERR 1
-ENV RUN_SCRIPTS 1
-ENV REAL_IP_HEADER 1
+RUN apt-get update && apt-get install -y \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    zip \
+    unzip \
+    git \
+    curl \
+    libonig-dev \
+    libxml2-dev
 
-# Các lệnh build
+RUN docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd
+
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+WORKDIR /var/www
+
+COPY . .
+
 RUN composer install --no-dev --optimize-autoloader
 
-# Phân quyền cho storage
-RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+RUN chmod -R 775 /var/www/storage /var/www/bootstrap/cache
+
+EXPOSE 80
+
+
+CMD php artisan serve --host=0.0.0.0 --port=$PORT
