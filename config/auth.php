@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\User;
+use App\features\auths\logins\models\User;
 
 return [
 
@@ -40,6 +40,10 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
+            'provider' => 'users',
+        ],
+        'api' => [
+            'driver' => 'sanctum',
             'provider' => 'users',
         ],
     ],

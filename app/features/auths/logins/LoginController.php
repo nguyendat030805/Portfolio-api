@@ -1,9 +1,9 @@
 <?php
 
-namespace App\features\auths\logins\controllers;
+namespace App\features\auths\logins;
 
-use App\features\auths\logins\requests\LoginRequest as RequestsLoginRequest;
-use App\features\auths\logins\services\LoginService;
+use App\features\auths\logins\LoginRequest as RequestsLoginRequest;
+use App\features\auths\logins\LoginService;
 use Laravel\Socialite\Facades\Socialite;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -35,16 +35,11 @@ class LoginController
             $googleUser = Socialite::driver('google')->user();
             $result = $this->LoginService->findOrCreateGoogleUser($googleUser);
             
-            return response()->json([
-                'status' => 'success',
-                'message' => 'User logged in with Google successfully',
-                'data' => $result
-            ], 200);
+            $token = $result['access_token'];
+            return redirect("http://localhost:5173/auth/callback?token={$token}");
         } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Failed to login with Google: ' . $e->getMessage(),
-            ], 500);
+    
+            return redirect("http://localhost:5173/login?error=" . urlencode($e->getMessage()));
         }
     }
 } 
