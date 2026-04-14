@@ -1,8 +1,8 @@
 <?php
 
-namespace App\features\auths\registers\services;
+namespace App\features\auths\registers;
 
-use App\features\auths\registers\repositories\RegisterRepository;
+use App\features\auths\registers\RegisterRepository;
 
 class RegisterService
 {
