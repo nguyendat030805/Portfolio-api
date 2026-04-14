@@ -1,6 +1,6 @@
 <?php
 
-namespace App\features\auths\registers\routes;
+namespace App\features\auths\registers;
 
 use App\features\auths\registers\RegisterController;
 use Illuminate\Support\Facades\Route;
