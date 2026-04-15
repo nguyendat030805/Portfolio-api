@@ -1,9 +1,9 @@
 <?php
 
-namespace App\features\auths\registers\controllers;
+namespace App\features\auths\registers;
 
-use App\features\auths\registers\requests\RegisterRequest;
-use App\features\auths\registers\services\RegisterService;
+use App\features\auths\registers\RegisterRequest;
+use App\features\auths\registers\RegisterService;
 use Illuminate\Http\JsonResponse;
 use Nette\Utils\Json;
 

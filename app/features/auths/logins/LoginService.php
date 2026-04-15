@@ -1,8 +1,8 @@
 <?php
 
-namespace App\features\auths\logins\services;
+namespace App\features\auths\logins;
 
-use App\features\auths\logins\repositories\LoginRepository;
+use App\features\auths\logins\LoginRepository;
 
 class LoginService
 {
