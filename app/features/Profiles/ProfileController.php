@@ -4,6 +4,7 @@ namespace App\features\Profiles;
 
 use App\features\Profiles\ProfileService;
 use App\features\Profiles\ProfilRequest;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 
 class ProfileController
@@ -34,7 +35,8 @@ class ProfileController
             $userId = Auth::id();
             $validateData = $request->validated();
             $avatarFile = $request->file('avatar');
-            $user = $this->service->updateProfile($userId, $validateData, $avatarFile);
+            $Cv_Image = $request->file('Cv_Image');
+            $user = $this->service->updateProfile($userId, $validateData, $avatarFile, $Cv_Image);
             return response()->json([
                 'message' => 'Profile updated successfully',
                 'user' => $user
@@ -43,6 +45,28 @@ class ProfileController
             return response()->json([
                 'message' => 'Failed to update profile: ' . $e->getMessage()
              ], 500);   
+        }
+    }
+
+    public function deleteCv() {
+        try {
+            $id = Auth::id();
+            
+            if (!$id) {
+                return response()->json(['message' => 'Bạn chưa đăng nhập'], 401);
+            }
+
+            $this->service->deleteCvImage($id);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Đã gỡ bỏ CV thành công.'
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 500);
         }
     }
 }

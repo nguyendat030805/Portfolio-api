@@ -15,13 +15,21 @@ class ProfilRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'   => 'nullable|string|max:50',
-            'bio'    => 'nullable|string|max:255', 
+            'name'     => 'nullable|string|max:50',
+            'bio'      => 'nullable|string|max:255', 
+            'phone'    => 'nullable|string|max:20',
+            'birthday' => 'nullable|string',
+            'Cv_Image' => [
+                'nullable',
+                'file',
+                'mimes:jpeg,png,jpg,gif,pdf',
+                'max:5120'
+            ],
             'avatar' => [
                 'nullable',
                 'image',         
                 'mimes:jpeg,png,jpg,gif',
-                'max:2048', 
+                'max:5120', 
             ],
         ];
     }
@@ -32,6 +40,8 @@ class ProfilRequest extends FormRequest
             'avatar.mimes' => 'Chỉ chấp nhận các định dạng: jpeg, png, jpg, gif.',
             'avatar.max'   => 'Ảnh đại diện không được vượt quá 2MB.',
             'bio.max'      => 'Đoạn giới thiệu (bio) không được quá 255 ký tự.',
+            'Cv_Image.mimes' => 'Chỉ chấp nhận các định dạng: jpeg,png,jpg,gif, PDF',
+            'Cv_Image.max'=>'Ảnh Cv không được vượt quá 255 ký tự'
         ];
     }
 }

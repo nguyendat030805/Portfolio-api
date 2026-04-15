@@ -1,6 +1,6 @@
 <?php
 
-use App\features\auths\logins\controllers\LoginController;
+use App\features\auths\logins\LoginController;
 use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return response()->json(['status' => 'success', 'message' => 'Backend is Live!']);
