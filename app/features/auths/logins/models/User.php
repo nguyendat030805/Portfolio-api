@@ -17,7 +17,10 @@ class User extends Authenticatable
         'remember_token',
         'google_id',
         'bio',
+        'Cv_Image',
         'avatar',
+        'phone',
+        'birthday',
     ];
 
     protected $hidden = [
