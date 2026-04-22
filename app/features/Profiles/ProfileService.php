@@ -45,7 +45,7 @@ class ProfileService
     public function deleteCvImage($userId) {
         $user = $this->repository->getUserInfo($userId);
         if (!$user) {
-            throw new Exception("Không tìm thấy người dùng.");
+            throw new Exception("User not found");
         }
         return $this->repository->clearCvImageInDb($userId);
     }
