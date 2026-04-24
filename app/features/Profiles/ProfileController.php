@@ -3,7 +3,9 @@
 namespace App\features\Profiles;
 
 use App\features\Profiles\ProfileService;
-use App\features\Profiles\ProfilRequest;
+use App\features\Profiles\ProfileRequest;
+use App\Traits\ApiResponse;
+use Illuminate\Support\Facades\Log;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,37 +16,27 @@ class ProfileController
     {
         $this->service = $service;
     }
-
+    use ApiResponse;
     public function getProfile(){
         try{
             $userId = Auth::id();
             $user = $this->service->getUserInfo($userId);
-            return response()->json([
-                'message' => 'Profile retrieved successfully',
-                'user' => $user
-            ], 200);
+            return $this->success($user, 'Profile retrieved successfully');
         }catch(\Exception $e){
-            return response()->json([
-                'message' => 'Failed to retrieve profile: ' . $e->getMessage()
-             ], 500);   
+            return $this->error('Failed to retrieve profile: ' . $e->getMessage(), 500);   
         }
     }
 
-    public function updateProfile(ProfilRequest $request){
+    public function updateProfile(ProfileRequest $request){
         try{
             $userId = Auth::id();
             $validateData = $request->validated();
             $avatarFile = $request->file('avatar');
             $Cv_Image = $request->file('Cv_Image');
             $user = $this->service->updateProfile($userId, $validateData, $avatarFile, $Cv_Image);
-            return response()->json([
-                'message' => 'Profile updated successfully',
-                'user' => $user
-            ], 200);
+            return $this->success($user, 'Profile updated successfully');
         }catch(\Exception $e){
-            return response()->json([
-                'message' => 'Failed to update profile: ' . $e->getMessage()
-             ], 500);   
+            return $this->error('Failed to update profile: ' . $e->getMessage(), 500);   
         }
     }
 
@@ -53,20 +45,14 @@ class ProfileController
             $id = Auth::id();
             
             if (!$id) {
-                return response()->json(['message' => 'Bạn chưa đăng nhập'], 401);
+                return $this->error('Unauthorized', 401);
             }
 
             $this->service->deleteCvImage($id);
 
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Đã gỡ bỏ CV thành công.'
-            ]);
+            return $this->success(null, 'CV image deleted successfully');
         } catch (Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage()
-            ], 500);
+            return $this->error('Failed to delete CV image: ' . $e->getMessage(), 500);
         }
     }
 }

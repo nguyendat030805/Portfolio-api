@@ -5,7 +5,7 @@ namespace App\features\Profiles;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ProfilRequest extends FormRequest
+class ProfileRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -36,12 +36,12 @@ class ProfilRequest extends FormRequest
     public function messages()
     {
         return [
-            'avatar.image' => 'File tải lên phải là hình ảnh.',
-            'avatar.mimes' => 'Chỉ chấp nhận các định dạng: jpeg, png, jpg, gif.',
-            'avatar.max'   => 'Ảnh đại diện không được vượt quá 2MB.',
-            'bio.max'      => 'Đoạn giới thiệu (bio) không được quá 255 ký tự.',
-            'Cv_Image.mimes' => 'Chỉ chấp nhận các định dạng: jpeg,png,jpg,gif, PDF',
-            'Cv_Image.max'=>'Ảnh Cv không được vượt quá 255 ký tự'
+            'avatar.image' => 'The uploaded file must be an image..',
+            'avatar.mimes' => 'Only jpeg, png, jpg, gif files are allowed.',
+            'avatar.max'   => 'The avatar image may not be greater than 5120 kilobytes.',
+            'bio.max'      => 'The bio field may not be greater than 255 characters.',
+            'Cv_Image.mimes' => 'Only jpeg,png,jpg,gif, PDF files are allowed.',
+            'Cv_Image.max'=>'The CV image may not be greater than 5120 kilobytes.'
         ];
     }
 }
