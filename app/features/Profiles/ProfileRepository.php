@@ -3,19 +3,31 @@
 namespace App\features\Profiles;
 
 use App\features\auths\logins\models\User;
+use Illuminate\Support\Facades\Cache;
 
 class ProfileRepository
-{
+{   
+
+    private function getCacheKey($userId){
+        return "user_profile: {$userId}";
+    }
+
     public function getUserInfo($userId){
-        return User::find($userId);
+        $cacheKey = $this->getCacheKey($userId);
+        return Cache::remember($cacheKey, now()->addHours(12), function() use ($userId) {
+        $user = User::find($userId);
+        
+        return $user ? $user->toArray() : null;
+    });
     }
 
     public function updateByProfile($userId, array $data){
         $user = User::find($userId);
         if (!$user) {
-            throw new \Exception("Không tìm thấy người dùng với ID: " . $userId);
+            throw new \Exception("User ID not found: " . $userId);
         }
         $user->update($data);
+        Cache::forget($this->getCacheKey($userId));
         $user->refresh(); 
         return $user;
     }
@@ -25,6 +37,8 @@ class ProfileRepository
     } 
 
     public function clearCvImageInDb($userId) {
-        return User::where('id', $userId)->update(['Cv_Image' => null]);
+        $result =  User::where('id', $userId)->update(['Cv_Image' => null]);
+        Cache::forget($this->getCacheKey($userId));
+        return $result;
     }
 }

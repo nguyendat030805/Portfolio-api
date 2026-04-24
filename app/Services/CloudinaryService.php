@@ -25,7 +25,7 @@ class CloudinaryService
 
             return $result['secure_url'];
         } catch (Exception $e) {
-            throw new Exception("Lỗi Cloudinary: " . $e->getMessage());
+            throw new Exception("Cloudinary Error: " . $e->getMessage());
         }
     }
 }
